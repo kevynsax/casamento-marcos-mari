@@ -18,7 +18,7 @@ export class Menu implements OnInit {
   protected isMenuOpen = signal(false);
 
   protected menuItems: MenuItem[] = [
-    { label: 'Home', sectionId: 'home' },
+    { label: 'Início', sectionId: 'home' },
     { label: 'Local', sectionId: 'local' },
     { label: 'Presentes', sectionId: 'shop' }
   ];

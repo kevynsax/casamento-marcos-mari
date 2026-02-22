@@ -1,30 +1,21 @@
 <div class="wpo-box-style">
   <section class="wpo-hero-slider">
-    <h2 class="hidden">some</h2>
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-1.HEIC">
+    <h2 class="hidden">casamento</h2>
+    <swiper-container #swiperEl init="false">
+      @for (slide of slides; track slide) {
+        <swiper-slide>
+          <div class="slide-inner slide-bg-image" [style.background-image]="'url(' + slide + ')'">
           </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-2.JPG">
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-3.JPG">
-          </div>
-        </div>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
+        </swiper-slide>
+      }
+    </swiper-container>
   </section>
 </div>
 <section class="wpo-hero-wedding-date">
   <div class="wpo-wedding-date-inner">
-    <span class="wow fadeInUp" data-wow-duration="800ms">Save the Date</span>
-    <h2 class="wow fadeInUp" data-wow-duration="1000ms">Jane & Peter</h2>
-    <p class="wow fadeInUp" data-wow-duration="1200ms">We Are Getting Married {{formatarData(dataCasamento)}}</p>
+    <span class="wow fadeInUp" data-wow-duration="800ms">Reserve a Data</span>
+    <h2 class="wow fadeInUp" data-wow-duration="1000ms">Mariana & Sartori</h2>
+    <p class="wow fadeInUp" data-wow-duration="1200ms">Nos casaremos {{formatarData(dataCasamento)}}</p>
     <span class="shape wow fadeInUp" data-wow-duration="1400ms"><img
       src="assets/images/wedding-date/1.png"
       alt=""> </span>

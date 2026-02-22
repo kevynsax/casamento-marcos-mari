@@ -1,17 +1,21 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, AfterViewInit, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { DATA_CASAMENTO } from '../../service/constants';
 import { interval, Subscription } from 'rxjs';
 import { ScrollAnimationDirective } from '../utils/scroll-animation.directive';
+import { register } from 'swiper/element/bundle';
+
+register();
 
 @Component({
     selector: 'app-cover',
     standalone: true,
     imports: [CommonModule, NgOptimizedImage, ScrollAnimationDirective],
     templateUrl: './cover.html',
-    styleUrl: './cover.scss'
+    styleUrl: './cover.scss',
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class Cover implements OnInit, OnDestroy {
+export class Cover implements OnInit, OnDestroy, AfterViewInit {
     protected readonly dataCasamento = DATA_CASAMENTO;
     protected dias = signal(0);
     protected horas = signal(0);
@@ -19,7 +23,36 @@ export class Cover implements OnInit, OnDestroy {
     protected segundos = signal(0);
     private subscription?: Subscription;
 
+    @ViewChild('swiperEl') swiperEl!: ElementRef;
+
+    protected slides = [
+        'assets/images/slider/slide-1.jpg',
+        'assets/images/slider/slide-2.JPG',
+        'assets/images/slider/slide-3.JPG',
+    ];
+
     constructor() {
+    }
+
+    ngAfterViewInit(): void {
+        const swiperContainer = this.swiperEl.nativeElement;
+        const swiperParams = {
+            loop: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true,
+            },
+            speed: 1000,
+            pagination: {
+                clickable: true,
+            },
+        };
+        Object.assign(swiperContainer, swiperParams);
+        swiperContainer.initialize();
     }
 
     protected formatarData(data: Date): string {
