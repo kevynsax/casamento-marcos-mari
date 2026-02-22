@@ -1,0 +1,17 @@
+<div class="menu" [class.sticky]="isSticky()">
+  <button class="hamburger" (click)="toggleMenu()">☰</button>
+  <div class="logo">
+    <span>M</span>
+    <span>&</span>
+    <span>S</span>
+  </div>
+  <div class="menu-items" [class.open]="isMenuOpen()">
+    @for (item of menuItems; track item.sectionId) {
+      <span
+        [class.active]="isActive(item.sectionId)"
+        (click)="scrollToSection(item.sectionId)">
+                {{ item.label }}
+            </span>
+    }
+  </div>
+</div>

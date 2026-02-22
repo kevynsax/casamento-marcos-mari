@@ -1,0 +1,334 @@
+@use "../../variables" as *;
+@use "../../mixins" as *;
+
+.wpo-product-wrap {
+  padding: 40px 32px;
+
+  .wpo-section-title {
+    margin-bottom: 60px;
+    text-align: center;
+
+    @include media-query(767px) {
+      margin-bottom: 40px;
+    }
+
+    span {
+      display: block;
+      font-size: 25px;
+      font-style: normal;
+      font-weight: 400;
+      text-align: center;
+      color: $theme-primary-color-s2;
+
+      @include media-query(767px) {
+        font-size: 25px;
+        line-height: 35px;
+        margin-bottom: 0;
+      }
+
+      @include media-query(575px) {
+        font-size: 18px;
+      }
+    }
+
+    h2 {
+      font-family: Sail;
+      font-size: 50px;
+      font-weight: 400;
+      margin: 0;
+      position: relative;
+      color: $dark-gray;
+      display: inline-block;
+      margin-top: 10px;
+
+      @include media-query(767px) {
+        font-size: 32px;
+        line-height: 40px;
+      }
+
+      @include media-query(575px) {
+        font-size: 25px;
+        margin-top: 0;
+      }
+    }
+
+    p {
+      font-size: 18px;
+    }
+  }
+
+  .products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .product-wrapper {
+    flex: 0 0 auto;
+    max-width: 300px;
+    width: 100%;
+
+    @media(max-width: 768px) {
+      max-width: 50%;
+      flex: 0 0 calc(50% - 15px);
+    }
+
+    @media(max-width: 480px) {
+      max-width: 100%;
+      flex: 0 0 100%;
+    }
+  }
+
+  .wpo-product-item {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .wpo-product-img {
+      position: relative;
+      overflow: hidden;
+      transition: color 0.25s;
+      display: block;
+      width: 100%;
+      padding-top: 100%; // Creates square aspect ratio (1:1)
+      background: #f5f5f5;
+
+
+      &:hover::after,
+      &:hover::before {
+        transform: scale(1, 1);
+      }
+
+      &::after,
+      &::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+        transition: all 0.5s;
+        z-index: 2;
+
+        @media(max-width:1199px) {
+          top: 10px;
+          right: 10px;
+          bottom: 10px;
+          left: 10px;
+        }
+      }
+
+      &::after {
+        border-right: 1px solid $white;
+        border-left: 1px solid $white;
+        transform: scale(1, 0);
+      }
+
+      &::before {
+        border-top: 1px solid $white;
+        border-bottom: 1px solid $white;
+        transform: scale(0, 1);
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transform: scale(1);
+        transition: all .3s;
+        z-index: 1;
+      }
+
+      ul {
+        display: flex;
+        list-style: none;
+        justify-content: center;
+        position: absolute;
+        left: 50%;
+        bottom: -50px;
+        transform: translateX(-50%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all .3s;
+        z-index: 11;
+        margin: 0;
+        padding: 0;
+
+        li {
+          font-size: 18px;
+          color: $theme-primary-color-s2;
+
+          a {
+            font-weight: 400;
+            font-size: 18px;
+            height: 50px;
+            line-height: 50px;
+            color: $theme-primary-color;
+            display: block;
+            width: 140px;
+            text-align: center;
+            background: $white;
+
+            &:hover {
+              background: $theme-primary-color;
+              color: $white;
+            }
+          }
+        }
+      }
+
+    }
+
+    &:hover {
+      .wpo-product-img {
+        ul {
+          opacity: 1;
+          visibility: visible;
+          bottom: 50px;
+        }
+
+        img {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .wpo-product-text {
+      padding-top: 20px;
+      text-align: center;
+      position: relative;
+
+      h3 {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        font-family: $base-font;
+        margin-bottom: 0;
+        color: $dark-gray;
+
+        @media(max-width:1199px) {
+          font-size: 18px;
+        }
+
+        a {
+          &:hover {
+            color: $theme-primary-color;
+          }
+        }
+      }
+
+      span{
+        display: block;
+        font-size: 14px;
+        color: $theme-primary-color;
+        font-family: $heading-font;
+        margin-bottom: 10px;
+        font-weight: 100;
+      }
+
+      ul {
+        display: flex;
+        list-style: none;
+        justify-content: center;
+
+        li {
+          font-size: 18px;
+          color: $theme-primary-color-s2;
+
+          @media(max-width:1199px) {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    // Unavailable product styles
+    &.unavailable {
+      opacity: 0.6;
+      pointer-events: none;
+      position: relative;
+
+      .wpo-product-img {
+        &::after,
+        &::before {
+          border-color: #999;
+        }
+
+        img {
+          filter: grayscale(50%);
+        }
+
+        ul {
+          li {
+            a.disabled {
+              background: #ccc;
+              color: #666;
+              cursor: not-allowed;
+              pointer-events: none;
+
+              &:hover {
+                background: #ccc;
+                color: #666;
+              }
+            }
+          }
+        }
+
+        .unavailable-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+
+          .unavailable-badge {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid $theme-primary-color;
+
+            @media(max-width:575px) {
+              font-size: 14px;
+              padding: 8px 16px;
+            }
+          }
+        }
+      }
+
+      .wpo-product-text {
+        h3 a {
+          color: #999;
+        }
+
+        ul li {
+          color: #999;
+        }
+      }
+
+      &:hover {
+        .wpo-product-img {
+          img {
+            transform: scale(1);
+          }
+        }
+      }
+    }
+  }
+}

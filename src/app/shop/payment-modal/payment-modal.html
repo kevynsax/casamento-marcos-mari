@@ -1,0 +1,248 @@
+@if (isOpen && product) {
+    <div class="payment-modal-backdrop" (click)="closeModal()">
+        <div class="payment-modal-container" (click)="$event.stopPropagation()">
+            <button class="modal-close" (click)="closeModal()" aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            @if (!showPaymentSuccess()) {
+                <div class="modal-header">
+                    <div class="header-content">
+                        <h2>Presentear com</h2>
+                        <div class="product-info">
+                            <img [src]="product.linkImagem" [alt]="product.nome">
+                            <div class="product-details">
+                                <h3>{{ product.nome }}</h3>
+                                <p class="product-price">R$ {{ product.preco.toFixed(2) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Guest Info Step -->
+                    @if (currentStep() === 'info') {
+                        <div class="guest-info-form">
+                            <div class="info-header">
+                                <h3>Queremos saber quem está<br>nos presenteando! ❤️</h3>
+                                <p>Por favor, nos conte quem você é e deixe uma mensagem especial.</p>
+                            </div>
+
+                            <form class="guest-form">
+                                <div class="form-group">
+                                    <label for="guestName">Seu Nome *</label>
+                                    <input
+                                        type="text"
+                                        id="guestName"
+                                        [(ngModel)]="guestName"
+                                        name="guestName"
+                                        placeholder="Digite seu nome completo"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="guestMessage">Mensagem para os Noivos *</label>
+                                    <textarea
+                                        id="guestMessage"
+                                        [(ngModel)]="guestMessage"
+                                        name="guestMessage"
+                                        placeholder="Deixe uma mensagem carinhosa para nós..."
+                                        rows="4"
+                                        required></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    }
+
+                    <!-- Payment Method Step -->
+                    @if (currentStep() === 'payment') {
+                        <div class="payment-method-selector">
+                        <button
+                            class="payment-method-btn"
+                            [class.active]="selectedPaymentMethod() === 'pix'"
+                            (click)="selectPaymentMethod('pix')">
+                            <svg fill="currentColor" width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/>
+                            </svg>
+                            PIX
+                        </button>
+                        <button
+                            class="payment-method-btn"
+                            [class.active]="selectedPaymentMethod() === 'credit-card'"
+                            (click)="selectPaymentMethod('credit-card')">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                                <line x1="2" y1="10" x2="22" y2="10"></line>
+                            </svg>
+                            Cartão de Crédito
+                        </button>
+                    </div>
+
+                    <!-- PIX Payment -->
+                    @if (selectedPaymentMethod() === 'pix') {
+                        <div class="payment-content pix-content">
+                            <div class="pix-info">
+                                <h3>Pague com PIX</h3>
+                                <p>Escaneie o QR Code ou copie a chave PIX abaixo:</p>
+                            </div>
+
+                            <div class="qr-code-container">
+                                @if (qrCodeDataUrl()) {
+                                    <img [src]="qrCodeDataUrl()" alt="QR Code PIX" class="qr-code-image">
+                                } @else {
+                                    <div class="qr-code-placeholder">
+                                        <svg width="200" height="200" viewBox="0 0 200 200">
+                                            <rect width="200" height="200" fill="#f0f0f0"/>
+                                            <text x="100" y="100" text-anchor="middle" fill="#666" font-size="14">Gerando QR Code...</text>
+                                        </svg>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="pix-key-container">
+                                <input
+                                    type="text"
+                                    [value]="pixKey()"
+                                    readonly
+                                    class="pix-key-input">
+                                <button
+                                    class="copy-btn"
+                                    (click)="copyPixKey()"
+                                    [class.copied]="pixCopied()">
+                                    @if (pixCopied()) {
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        Copiado!
+                                    } @else {
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar Chave
+                                    }
+                                </button>
+                            </div>
+
+                            <div class="pix-instructions">
+                                <h4>Instruções:</h4>
+                                <ol>
+                                    <li>Abra o app do seu banco</li>
+                                    <li>Escolha a opção PIX</li>
+                                    <li>Escaneie o QR Code ou cole a chave PIX</li>
+                                    <li>Confirme o pagamento</li>
+                                </ol>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Credit Card Payment -->
+                    @if (selectedPaymentMethod() === 'credit-card') {
+                        <div class="payment-content card-content">
+                            <form class="card-form">
+                                <div class="form-group">
+                                    <label for="cardCpf">CPF</label>
+                                    <input
+                                        type="text"
+                                        id="cardCpf"
+                                        [(ngModel)]="cardCpf"
+                                        name="cardCpf"
+                                        (input)="formatCpf($event)"
+                                        placeholder="000.000.000-00"
+                                        maxlength="14">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cardName">Nome no Cartão</label>
+                                    <input
+                                        type="text"
+                                        id="cardName"
+                                        [(ngModel)]="cardName"
+                                        name="cardName"
+                                        placeholder="NOME COMO NO CARTÃO"
+                                        style="text-transform: uppercase;">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cardNumber">Número do Cartão</label>
+                                    <input
+                                        type="text"
+                                        id="cardNumber"
+                                        [(ngModel)]="cardNumber"
+                                        name="cardNumber"
+                                        (input)="formatCardNumber($event)"
+                                        placeholder="1234 5678 9012 3456"
+                                        maxlength="19">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cardExpiry">Validade</label>
+                                        <input
+                                            type="text"
+                                            id="cardExpiry"
+                                            [(ngModel)]="cardExpiry"
+                                            name="cardExpiry"
+                                            (input)="formatExpiry($event)"
+                                            placeholder="MM/AA"
+                                            maxlength="5">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="cardCvv">CVV</label>
+                                        <input
+                                            type="text"
+                                            id="cardCvv"
+                                            [(ngModel)]="cardCvv"
+                                            name="cardCvv"
+                                            placeholder="123"
+                                            maxlength="3">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                }
+                </div>
+
+                <div class="modal-footer">
+                    @if (currentStep() === 'info') {
+                        <button
+                            class="btn-primary"
+                            [disabled]="!isGuestInfoValid()"
+                            (click)="proceedToPayment()">
+                            Continuar para Pagamento
+                        </button>
+                    } @else if (selectedPaymentMethod() === 'credit-card') {
+                        <button
+                            class="btn-primary"
+                            [disabled]="!isFormValid() || isProcessing()"
+                            (click)="processPayment()">
+                            @if (isProcessing()) {
+                                <span class="spinner"></span>
+                                Processando...
+                            } @else {
+                                Pagar R$ {{ product.preco.toFixed(2) }}
+                            }
+                        </button>
+                    }
+                </div>
+            } @else {
+                <div class="success-message">
+                    <div class="success-icon">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="8 12 11 15 16 9"></polyline>
+                        </svg>
+                    </div>
+                    <h2>Pagamento Confirmado!</h2>
+                    <p>Obrigado pelo seu presente! ❤️</p>
+                </div>
+            }
+        </div>
+    </div>
+}
+

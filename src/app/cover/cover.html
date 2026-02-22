@@ -1,0 +1,70 @@
+<div class="wpo-box-style">
+  <section class="wpo-hero-slider">
+    <h2 class="hidden">some</h2>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-1.HEIC">
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-2.JPG">
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="slide-inner slide-bg-image" data-background="assets/images/slider/slide-3.JPG">
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+</div>
+<section class="wpo-hero-wedding-date">
+  <div class="wpo-wedding-date-inner">
+    <span class="wow fadeInUp" data-wow-duration="800ms">Save the Date</span>
+    <h2 class="wow fadeInUp" data-wow-duration="1000ms">Jane & Peter</h2>
+    <p class="wow fadeInUp" data-wow-duration="1200ms">We Are Getting Married {{formatarData(dataCasamento)}}</p>
+    <span class="shape wow fadeInUp" data-wow-duration="1400ms"><img
+      src="assets/images/wedding-date/1.png"
+      alt=""> </span>
+    <div class="row wow fadeInUp" data-wow-duration="1600ms">
+      <div class="col col-xs-12">
+        <div class="clock-grids">
+          <div id="clock">
+            <div class="box">
+              <div>
+                <div class="time">{{ dias() }}</div>
+                <span>Dias</span>
+              </div>
+            </div>
+            <div class="box">
+              <div>
+                <div class="time">{{ horas() }}</div>
+                <span>Horas</span>
+              </div>
+            </div>
+            <div class="box">
+              <div>
+                <div class="time">{{ minutos() }}</div>
+                <span>Mins</span>
+              </div>
+            </div>
+            <div class="box">
+              <div>
+                <div class="time">{{ segundos() }}</div>
+                <span>Segs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shape-1">
+    <img src="assets/images/wedding-date/2.png" alt="">
+  </div>
+  <div class="shape-2">
+    <img src="assets/images/wedding-date/3.png" alt="">
+  </div>
+</section>

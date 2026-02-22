@@ -1,0 +1,145 @@
+@use "../../variables" as *;
+
+.menu{
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: $white;
+  transition: all 0.3s ease;
+  z-index: 999;
+
+  &.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.3s ease;
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  .logo {
+    padding: 16px;
+
+    span {
+      color: $theme-primary-color;
+      font-family: $heading-font;
+
+      margin: 0 2px;
+      font-size: 35px;
+
+      &:nth-child(2) {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .menu-items{
+    flex: 1;
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span{
+      text-transform: uppercase;
+      font-size: 18px;
+      font-weight: 500;
+      color: black;
+      padding: 24px 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &:hover {
+        color: $theme-primary-color;
+      }
+
+      &.active{
+        color: $theme-primary-color;
+
+        &:after{
+          content: "";
+          width: 100%;
+          height: 4px;
+          background: $theme-primary-color;
+          display: block;
+          border-radius: 4px;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          animation: expandWidth 0.3s ease;
+
+          @keyframes expandWidth {
+            from {
+              width: 0;
+            }
+            to {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 16px;
+    color: $theme-primary-color;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu {
+    position: relative;
+    .hamburger {
+      display: block;
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .menu-items {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: all 0.3s ease;
+      background: $white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+      &.open {
+        opacity: 1;
+        transform: translateY(0);
+        flex-direction: column;
+      }
+
+      span {
+        padding: 16px;
+        text-align: center;
+      }
+    }
+  }
+}

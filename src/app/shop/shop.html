@@ -1,0 +1,46 @@
+
+<div id="shop" class="wpo-product-wrap">
+    <div class="row">
+        <div class="wpo-section-title">
+            <span>Presentes</span>
+            <h2>Você pode nos presentear</h2>
+        </div>
+    </div>
+    <div class="products-grid">
+        @for (product of products(); track product.id) {
+            <div class="product-wrapper">
+                <div class="wpo-product-item" appScrollAnimation [class.unavailable]="!product.disponivel">
+                    <div class="wpo-product-img">
+                        <img [src]="product.linkImagem" [alt]="product.nome">
+                        @if (!product.disponivel) {
+                            <div class="unavailable-overlay">
+                                <span class="unavailable-badge">Já Presenteado</span>
+                            </div>
+                        }
+                        <ul>
+                            @if (product.disponivel) {
+                                <li><a (click)="openPaymentModal(product)" style="cursor: pointer;">Presentear</a></li>
+                            } @else {
+                                <li><a class="disabled" style="cursor: not-allowed;">Indisponível</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="wpo-product-text">
+                        <h3>{{ product.nome }}</h3>
+                        <ul>
+                            <li>{{ formatPrice(product.preco) }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<app-payment-modal
+    [product]="selectedProduct()"
+    [isOpen]="isModalOpen()"
+    (close)="closePaymentModal()"
+    (paymentSuccess)="onPaymentSuccess()">
+</app-payment-modal>
+
